@@ -1,0 +1,13 @@
+
+<h1 class="center">{{data.feed?.title}}</h1>
+<main class="content">
+  <ul class="pure-g">
+    <li *ngFor="let item of data?.items" class="pure-u-1-1 card">
+      {{item.title}}
+      <button class="pure-button" *ngIf="playing.link == item.enclosure.link" type="button" (click)="stop()">■</button>
+      <button class="pure-button" *ngIf="playing.link != item.enclosure.link" type="button" (click)="play(item)">▶</button>
+    </li>
+  </ul>
+</main>
+
+<audio #player class="player" preload="none" [controls]="!!playing.link"></audio>
