@@ -1,13 +1,18 @@
 
-<h1 class="center">{{data.feed?.title}}</h1>
-<main class="content">
-  <ul class="pure-g">
-    <li *ngFor="let item of data?.items" class="pure-u-1-1 card">
-      {{item.title}}
-      <button class="pure-button" *ngIf="playing.link == item.enclosure.link" type="button" (click)="stop()">■</button>
-      <button class="pure-button" *ngIf="playing.link != item.enclosure.link" type="button" (click)="play(item)">▶</button>
-    </li>
-  </ul>
+<main class="container">
+  <h1>{{data.feed?.title}}</h1>
+
+  <div class="list-group">
+    <div *ngFor="let item of data?.items" class="list-group-item d-flex w-100 input-group">
+      <div class="form-control text-truncate border-0 px-0" [title]="item.title">{{item.title}}</div>
+      <button class="btn rounded btn-secondary" *ngIf="playing.link == item.enclosure.link" type="button" (click)="stop()">
+        <i class="bi bi-stop-btn"></i>
+      </button>
+      <button class="btn rounded" *ngIf="playing.link != item.enclosure.link" type="button" (click)="play(item)">
+        <i class="bi bi-play-btn"></i>
+      </button>
+    </div>
+  </div>
 </main>
 
 <audio #player class="player" preload="none" [controls]="!!playing.link"></audio>
