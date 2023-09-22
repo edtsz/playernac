@@ -1,6 +1,5 @@
-
 <main class="container">
-  <h1>{{data.feed?.title}}</h1>
+  <h1>{{data?.feed?.title}}</h1>
 
   <div class="list-group">
     <div *ngFor="let item of data?.items" class="list-group-item d-flex w-100 input-group">
@@ -13,6 +12,22 @@
       </button>
     </div>
   </div>
+
+  <nav>
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" routerLink="." [queryParams]="{pg: pagination.prevPage}" aria-label="Anterior">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item"><a class="page-link">Página {{pagination.currentPage}}</a></li>
+      <li class="page-item">
+        <a class="page-link" routerLink="." [queryParams]="{pg: pagination.nextPage}" aria-label="Próxima">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </main>
 
 <audio #player class="player" preload="none" [controls]="!!playing.link"></audio>

@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { FeedService } from 'src/app/feed.service';
+import { ActivatedRoute } from '@angular/router';
+import { FeedService } from 'src/app/services/feed.service';
 
 @Component({
   selector: 'app-home',
@@ -11,24 +12,44 @@ export class HomeComponent {
   @ViewChild('player') player?: ElementRef;
   playing: any = {};
 
+  pagination: any = {
+    currentPage: 1,
+    prevPage: 0,
+    nextPage: 0
+  }
+
+
   constructor(
     private feed: FeedService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    this.feed.load()
+    this.route.queryParams.subscribe(params => {
+      this.pagination.currentPage = parseInt(params['pg'] || 1);
+      if (this.pagination.currentPage < 1) {
+        this.pagination.currentPage = 1;
+      }
+      this.pagination.prevPage = this.pagination.currentPage - 1;
+      this.pagination.nextPage = this.pagination.currentPage + 1;
+      this.loadFeed();
+    });
+  }
+
+  loadFeed() {
+    this.feed.load(this.pagination.currentPage)
       .subscribe({
         next: (feed) => {
-          this.data = feed;
           console.log(feed);
+          this.data = feed;
         },
         error: (response) => {
-          console.error(response);
+          console.error('error', response);
         },
         complete: () => {
           console.log("complete");
         }
-      })
+      })    
   }
 
   play(item: any) {
